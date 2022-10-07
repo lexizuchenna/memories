@@ -1,0 +1,32 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "React Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lexizuchenna/mernreduxtoolkit.git"
+  },
+  "keywords": [
+    "Mern",
+    "Redux",
+    "Toolkit"
+  ],
+  "author": "Alexander",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lexizuchenna/mernreduxtoolkit/issues"
+  },
+  "homepage": "https://github.com/lexizuchenna/mernreduxtoolkit#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.1"
+  }
+}
