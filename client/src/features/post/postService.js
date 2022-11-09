@@ -1,17 +1,35 @@
 import axios from "axios";
 
-const url = "http://localhost:3500/posts";
+const url = axios.create({ baseURL: "http://localhost:3500" });
+
+// url.interceptors.request.use((req) => {
+//   if(localStorage.getItem('profile')) {
+//     let token = `Bearer ${JSON.parse(localStorage.getItem('profile').token)}`
+//     console.log(token)
+//     req.headers.Authorization = token
+//   }
+
+//   return req
+// })
 
 // Fetch All Posts
 export const fetchPosts = async () => {
-  let { data } = await axios.get(url);
+
+  let { data } = await url.get("/posts");
   return data;
 };
 
 // Create New Post
-export const createPost = async (newPost) => {
+export const createPost = async (newPost, token) => {
   try {
-    let { data } = await axios.post(url, newPost);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let { data } = await url.post("/posts", newPost, config);
+    console.log(config)
     return data;
   } catch (error) {
     console.log(error);
@@ -19,9 +37,15 @@ export const createPost = async (newPost) => {
 };
 
 // Update Post
-const updatePost = async (id, postData) => {
+const updatePost = async (id, postData, token) => {
   try {
-    let { data } = await axios.patch(`${url}/${id}`, postData);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let { data } = await url.patch(`/posts/${id}`, postData, config);
 
     return data;
   } catch (error) {
@@ -30,9 +54,15 @@ const updatePost = async (id, postData) => {
 };
 
 // Delete Post
-export const deletePost = async (id) => {
+export const deletePost = async (id, token) => {
   try {
-    let { data } = await axios.delete(`${url}/${id}`);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    let { data } = await url.delete(`/posts/${id}`, config);
     return data;
   } catch (error) {
     console.log(error);
@@ -40,9 +70,16 @@ export const deletePost = async (id) => {
 };
 
 // Like Post
-export const likePost = async (id) => {
+export const likePost = async (id, token) => {
   try {
-    let { data } = await axios.patch(`${url}/${id}/likepost`);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    
+    let { data } = await url.patch(`/posts/${id}/likepost`, '', config)
+    console.log(config)
     return data;
   } catch (error) {
     console.log(error);

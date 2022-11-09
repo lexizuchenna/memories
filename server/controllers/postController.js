@@ -16,7 +16,7 @@ const getPosts = async (req, res) => {
 // Create Post
 const createPost = async (req, res) => {
   const postData = req.body;
-  const newPost = new postMessage(postData);
+  const newPost = new postMessage({ ...postData, creator: req.userId });
   try {
     await newPost.save();
     res.status(201).json(newPost);
@@ -61,16 +61,25 @@ const likePost = async (req, res) => {
   try {
     const { id } = req.params;
 
+    if (!req.userId) return res.json("Not Logged In");
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.json("Post not found");
     }
+
     let post = await postMessage.findById(id);
 
-    const updatedPost = await postMessage.findByIdAndUpdate(
-      id,
-      { likeCount: post.likeCount + 1 },
-      { new: true }
-    );
+    let index = post.likes.findIndex((id) => id === String(req.userId));
+    console.log(index)
+
+    if (index === -1) {
+      post.likes.push(req.userId);
+    } else {
+      const liked =  post.likes.filter((id) => id !== req.userId);
+      post.likes = liked
+    }
+    const updatedPost = await postMessage.findByIdAndUpdate(id, post, {
+      new: true,
+    });
     res.status(200).json(updatedPost);
   } catch (error) {
     console.log(error);
