@@ -1,5 +1,5 @@
 # Overview
-Memories App by JSMastery
+Memories App by JSMastery Using `@reduxjs/toolkit`
 
 
 In the project directory, you can run:
